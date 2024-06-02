@@ -12,7 +12,7 @@ public class UsuarioDTO {
     private boolean sexo;
     private boolean rol;
 
-    private UsuarioDTO() {
+    public UsuarioDTO() {
 
     }
 

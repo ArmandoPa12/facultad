@@ -27,7 +27,7 @@ public class Gestion {
     // true)
     // private List<GestionPeriodo> gestionPeriodos;
 
-    private Gestion() {
+    public Gestion() {
     }
 
     public Gestion(Long id, Integer anio, Date fechaIni, Date fechaFin

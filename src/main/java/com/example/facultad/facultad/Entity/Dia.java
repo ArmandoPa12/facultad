@@ -1,25 +1,19 @@
 package com.example.facultad.facultad.Entity;
 
-import java.util.List;
-
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "periodo")
-public class Periodo {
-
+@Table(name = "dia")
+public class Dia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
 
-    @OneToMany(mappedBy = "periodo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GestionPeriodo> gestionPeriodos;
-
-    public Periodo() {
+    public Dia() {
     }
 
-    public Periodo(Long id, String nombre) {
+    public Dia(Long id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
@@ -42,7 +36,7 @@ public class Periodo {
 
     @Override
     public String toString() {
-        return "Periodo [id=" + id + ", nombre=" + nombre + ", gestionPeriodos=" + gestionPeriodos + "]";
+        return "Dia [id=" + id + ", nombre=" + nombre + "]";
     }
 
 }

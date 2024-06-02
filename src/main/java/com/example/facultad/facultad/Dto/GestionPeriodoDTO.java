@@ -2,10 +2,7 @@ package com.example.facultad.facultad.Dto;
 
 import java.util.Date;
 
-import com.example.facultad.facultad.Entity.Gestion;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.TemporalType;
 
 public class GestionPeriodoDTO {
     private Long periodo_id;

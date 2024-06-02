@@ -2,7 +2,6 @@ package com.example.facultad.facultad.Service.Implementation;
 
 import java.util.Optional;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,6 @@ public class UsuarioIMPL implements UsuarioService {
 
     @Override
     public LoginResponse loginUsuario(LoginDTO loginDTO) {
-        String msg = "";
         Usuario employee1 = usuarioRepository.findByUsuario(loginDTO.getUsuario());
         if (employee1 != null) {
             String password = loginDTO.getPassword();

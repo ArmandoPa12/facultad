@@ -4,8 +4,43 @@ public class LoginResponse {
 
     String message;
     Boolean status;
+    String token;
+    String username;
+    Long userId;
 
-    LoginResponse() {
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public LoginResponse() {
+    }
+
+    public LoginResponse(String message, Boolean status, String token, String username, Long userId) {
+        this.message = message;
+        this.status = status;
+        this.token = token;
+        this.username = username;
+        this.userId = userId;
     }
 
     public LoginResponse(String message, Boolean status) {
@@ -31,7 +66,8 @@ public class LoginResponse {
 
     @Override
     public String toString() {
-        return "LoginResponse [message=" + message + ", status=" + status + "]";
+        return "LoginResponse [message=" + message + ", status=" + status + ", token=" + token + ", username="
+                + username + ", userId=" + userId + "]";
     }
 
 }

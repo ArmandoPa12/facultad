@@ -3,6 +3,7 @@ package com.example.facultad.facultad.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,9 @@ public class GrupoAulaController {
         grupoAula.setDia(dia);
         grupoAula.setMateriaGrupo(materiaGrupo);
         GrupoAula nuevo = grupoAulaService.save(grupoAula);
+        if (grupoAulaService.verificarConflictoHorario(grupoAula)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         return ResponseEntity.ok(nuevo);
     }
 

@@ -3,10 +3,13 @@ package com.example.facultad.facultad.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.facultad.facultad.Entity.Dia;
+import com.example.facultad.facultad.Response.LoginResponse;
 import com.example.facultad.facultad.Service.DiaService;
 
 @CrossOrigin
@@ -31,6 +34,7 @@ public class DiaController {
     @PostMapping
     public ResponseEntity<Dia> create(@RequestBody Dia dia) {
         Dia nuevo = diaService.save(dia);
+        // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         return ResponseEntity.ok(nuevo);
     }
 

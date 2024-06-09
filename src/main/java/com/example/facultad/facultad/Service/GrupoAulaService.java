@@ -12,4 +12,10 @@ public interface GrupoAulaService {
     GrupoAula save(GrupoAula grupoAula);
 
     void deleteById(Long id);
+
+    boolean verificarConflictoHorario(GrupoAula grupoAula);
+
+    List<GrupoAula> findByMateriaGrupoId(Long aula_id);
+
+    // boolean findByAulaIdAndDiaId(Long aula_id, Long dia_id);
 }

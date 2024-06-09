@@ -43,6 +43,14 @@ public class LoginResponse {
         this.userId = userId;
     }
 
+    public LoginResponse(String message) {
+        this.message = message;
+        this.status = false;
+        this.token = "";
+        this.username = "";
+        this.userId = null;
+    }
+
     public LoginResponse(String message, Boolean status) {
         this.message = message;
         this.status = status;

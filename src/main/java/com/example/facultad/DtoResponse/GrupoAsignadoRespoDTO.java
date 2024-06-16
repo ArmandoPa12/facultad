@@ -1,12 +1,13 @@
 package com.example.facultad.DtoResponse;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
 public class GrupoAsignadoRespoDTO {
     private Long id;
-    private LocalTime horas_asignadas;
+    private BigDecimal horas_asignadas;
     // gestion
     private Long gestion_id;
     private Integer anio;
@@ -45,11 +46,11 @@ public class GrupoAsignadoRespoDTO {
         this.id = id;
     }
 
-    public LocalTime getHoras_asignadas() {
+    public BigDecimal getHoras_asignadas() {
         return horas_asignadas;
     }
 
-    public void setHoras_asignadas(LocalTime horas_asignadas) {
+    public void setHoras_asignadas(BigDecimal horas_asignadas) {
         this.horas_asignadas = horas_asignadas;
     }
 
@@ -232,7 +233,8 @@ public class GrupoAsignadoRespoDTO {
         this.evaluacion3 = evaluacion3;
     }
 
-    public GrupoAsignadoRespoDTO(Long id, LocalTime horas_asignadas, Long gestion_id, Integer anio, Date gestion_inicio,
+    public GrupoAsignadoRespoDTO(Long id, BigDecimal horas_asignadas, Long gestion_id, Integer anio,
+            Date gestion_inicio,
             Date gestion_fin, Long periodo_id, String nombre_periodo, Date inicio_clase, Date fin_clase,
             Date evaluacion1, Date evaluacion2, Date evaluacion3, Long materia_id, String materia_nombre,
             String materia_sigla, Long grupo_id, String grupo_nombre, String grupo_sigla, Long usuario_id,

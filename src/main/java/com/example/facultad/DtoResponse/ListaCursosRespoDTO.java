@@ -1,11 +1,13 @@
 package com.example.facultad.DtoResponse;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 public class ListaCursosRespoDTO {
     private Long id;
     private LocalTime hora_inicio;
     private LocalTime hora_fin;
+    private BigDecimal duracionClase;
     // aula
     private Long aula_id;
     private String aula_nombre;
@@ -13,6 +15,27 @@ public class ListaCursosRespoDTO {
     // dia
     private Long dia_id;
     private String dia_nombre;
+
+    public ListaCursosRespoDTO(Long id, LocalTime hora_inicio, LocalTime hora_fin, BigDecimal duracionClase,
+            Long aula_id, String aula_nombre, String aula_piso, Long dia_id, String dia_nombre) {
+        this.id = id;
+        this.hora_inicio = hora_inicio;
+        this.hora_fin = hora_fin;
+        this.duracionClase = duracionClase;
+        this.aula_id = aula_id;
+        this.aula_nombre = aula_nombre;
+        this.aula_piso = aula_piso;
+        this.dia_id = dia_id;
+        this.dia_nombre = dia_nombre;
+    }
+
+    public BigDecimal getDuracionClase() {
+        return duracionClase;
+    }
+
+    public void setDuracionClase(BigDecimal duracionClase) {
+        this.duracionClase = duracionClase;
+    }
 
     public Long getId() {
         return id;

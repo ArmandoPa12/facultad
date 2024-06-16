@@ -1,5 +1,6 @@
 package com.example.facultad.facultad.Entity;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 import jakarta.persistence.*;
@@ -24,8 +25,21 @@ public class GrupoAula {
 
     private LocalTime horaInicio;
     private LocalTime horaFin;
+    @Column(precision = 19, scale = 2)
+    private BigDecimal duracionclase;
 
     public GrupoAula() {
+    }
+
+    public GrupoAula(Long id, MateriaGrupo materiaGrupo, Aula aula, Dia dia, LocalTime horaInicio, LocalTime horaFin,
+            BigDecimal duracionClase) {
+        this.id = id;
+        this.materiaGrupo = materiaGrupo;
+        this.aula = aula;
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.duracionclase = duracionClase;
     }
 
     public GrupoAula(Long id, MateriaGrupo materiaGrupo, Aula aula, Dia dia, LocalTime horaInicio, LocalTime horaFin) {
@@ -87,14 +101,16 @@ public class GrupoAula {
 
     @Override
     public String toString() {
-        return "GrupoAula{" +
-                "id=" + id +
-                ", materiaGrupo=" + materiaGrupo +
-                ", aula=" + aula +
-                ", dia=" + dia +
-                ", horaInicio=" + horaInicio +
-                ", horaFin=" + horaFin +
-                '}';
+        return "GrupoAula [id=" + id + ", materiaGrupo=" + materiaGrupo + ", aula=" + aula + ", dia=" + dia
+                + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", duracionclase=" + duracionclase + "]";
+    }
+
+    public BigDecimal getDuracionclase() {
+        return duracionclase;
+    }
+
+    public void setDuracionclase(BigDecimal duracionClase) {
+        this.duracionclase = duracionClase;
     }
 
 }

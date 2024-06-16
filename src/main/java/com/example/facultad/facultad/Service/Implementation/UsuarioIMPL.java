@@ -28,16 +28,16 @@ public class UsuarioIMPL implements UsuarioService {
 
     @Override
     public String addUsuario(UsuarioDTO usr) {
-        Usuario usuario = new Usuario(
-                usr.getId(),
-                usr.getCi(),
-                usr.getNombre(),
-                usr.getApellidos(),
-                usr.getUsuario(),
-                this.passwordEncoder.encode(usr.getPassword()),
-                usr.getTelefono(),
-                usr.isSexo(),
-                usr.isRol());
+
+        Usuario usuario = new Usuario();
+        usuario.setNombre(usr.getNombre());
+        usuario.setApellidos(usr.getApellidos());
+        usuario.setCi(usr.getCi());
+        usuario.setUsuario(usr.getUsuario());
+        usuario.setPassword(this.passwordEncoder.encode(usr.getPassword()));
+        usuario.setSexo(usr.isSexo());
+        usuario.setRol(usr.isRol());
+        usuario.setSueldo(usr.getSueldo());
 
         usuarioRepository.save(usuario);
         return usuario.getUsuario();

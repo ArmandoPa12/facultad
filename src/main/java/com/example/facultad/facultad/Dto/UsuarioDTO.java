@@ -1,5 +1,7 @@
 package com.example.facultad.facultad.Dto;
 
+import java.math.BigDecimal;
+
 public class UsuarioDTO {
 
     private Long id;
@@ -11,6 +13,47 @@ public class UsuarioDTO {
     private String telefono;
     private boolean sexo;
     private boolean rol;
+    private BigDecimal sueldo;
+    private BigDecimal sueldo_final;
+    private BigDecimal descuento;
+
+    public UsuarioDTO(Long id, String ci, String nombre, String apellidos, String usuario, String password,
+            String telefono, boolean sexo, boolean rol, BigDecimal sueldo) {
+        this.id = id;
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.usuario = usuario;
+        this.password = password;
+        this.telefono = telefono;
+        this.sexo = sexo;
+        this.rol = rol;
+        this.sueldo = sueldo;
+    }
+
+    public BigDecimal getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(BigDecimal sueldo) {
+        this.sueldo = sueldo;
+    }
+
+    public BigDecimal getSueldo_final() {
+        return sueldo_final;
+    }
+
+    public void setSueldo_final(BigDecimal sueldo_final) {
+        this.sueldo_final = sueldo_final;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
 
     public UsuarioDTO() {
 

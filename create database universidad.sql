@@ -10,17 +10,40 @@ create table usuario
 	password varchar(254) not null,
 	telefono varchar(14) null,
 	sexo boolean not null,  --false hombre/ true mujer
-	rol boolean not null --0 admin / 1 docente
+	rol boolean not null, --0 admin / 1 docente
+	sueldo numeric null,
+	sueldo_final numeric null,
+	descuento integer default 0
 	--foreign key (rol_id) references rol(id)on delete cascade on update cascade
 );
 create table registro
 (
 	id serial primary key,
 	usuario_id integer,
-	timestamps timestamp not null,
+	tiempo time not null,
+	fecha date not null,
 	tipo_check varchar(3) not null, --in | out
-	device varchar(15) not null,
+	lugar varchar(25) not null,
 	foreign key(usuario_id) references usuario(id)
+);
+-- *******************************
+create table actividad
+(
+	id serial primary key,
+	nombre varchar(100),
+	duracion numeric not null,
+	direccion varchar(200) not null,
+	fecha date not null,
+	hora_ini time not null,
+	hora_fin time not null
+);
+create table actividad_usuario
+(
+	id serial primary key,
+	usuario_id integer,
+	actividad_id integer,
+	foreign key(usuario_id) references usuario(id),
+	foreign key(actividad_id) references actividad(id)
 );
 -- *******************************
 create table carrera
@@ -82,6 +105,7 @@ create table grupo_aula
 	dia_id integer,
 	hora_inicio time not null,
 	hora_fin time not null,
+	duracionClase numeric default 0, --#########################
 	foreign key (materia_grupo_id) references materia_grupo(id) on delete cascade on update cascade,
 	foreign key (dia_id) references dia(id) on delete cascade on update cascade,
 	foreign key (aula_id) references aula(id) on delete cascade on update cascade
@@ -116,7 +140,7 @@ create table gestion_periodo
 create table grupo_asignado
 (
 	id serial primary key,
-	horas_asignadas time null,
+	horas_asignadas numeric null,
 	usuario_id integer,
 	gestion_periodo_id integer,
 	--periodo_id integer,
@@ -128,11 +152,10 @@ create table grupo_asignado
 );
 
 -- ********************
-insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol)values(777775,'pedro','lopez heredia', 'pedro1','123456','70015515',false,false); --1
-insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol)values(777563,'jose','camacho', 'jose1','123456','755132',false,true); --2
-insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol)values(757563,'miguel','alcon', 'alcon1','123456','7537315',false,true); --3
-insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol)values(777863,'maria','suares', 'maria1','123456','7553565',true,true); --4
-
+insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol,sueldo)values(777775,'pedro','lopez heredia', 'pedro1','123456','70015515',false,false,6000); --1
+insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol,sueldo)values(777563,'jose','camacho', 'jose1','123456','755132',false,true,5000); --2
+insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol,sueldo)values(757563,'miguel','alcon', 'alcon1','123456','7537315',false,true,5000); --3
+insert into usuario(ci,nombre,apellidos,usuario,password,telefono,sexo,rol,sueldo)values(777863,'maria','suares', 'maria1','123456','7553565',true,true,5000); --4
 -- ************************
 insert into carrera(nombre,sigla,jefe_carrera,sistema_academico)values('Informatica','187-3',null,'S');  --1
 insert into carrera(nombre,sigla,jefe_carrera,sistema_academico)values('Redes','187-2',1,'S'); -- 2
@@ -177,24 +200,24 @@ insert into dia(nombre)values('viernes');
 insert into dia(nombre)values('sabado');
 -- ********************
 -- ********************calculo -1
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(1,2,'07:00:00','08:30:00',1);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(1,2,'07:00:00','08:30:00',3);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(1,3,'07:00:00','08:30:00',5);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(1,2,'07:00:00','08:30:00',1,2.3);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(1,2,'07:00:00','08:30:00',3,2.3);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(1,3,'07:00:00','08:30:00',5,2.3);
 -- ********************intro -2
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(2,2,'08:31:00','10:00:00',1);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(2,2,'08:31:00','10:00:00',3);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(2,3,'08:31:00','10:00:00',5);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(2,2,'08:31:00','10:00:00',1,2.3);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(2,2,'08:31:00','10:00:00',3,2.3);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(2,3,'08:31:00','10:00:00',5,2.3);
 -- ********************ingles -3
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(3,2,'10:01:00','12:00:00',1);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(3,2,'10:01:00','12:00:00',3);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(3,3,'10:01:00','12:00:00',5);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(3,2,'10:01:00','12:00:00',1,3.6);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(3,2,'10:01:00','12:00:00',3,3.6);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(3,3,'10:01:00','12:00:00',5,3.6);
 -- ********************estructura -4
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(4,2,'07:00:00','09:00:00',2);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(4,2,'07:00:00','09:00:00',4);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(4,2,'07:00:00','09:00:00',2,2.3);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(4,2,'07:00:00','09:00:00',4,2.3);
 -- ********************fisica -5
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(5,10,'09:01:00','12:00:00',2);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(5,10,'09:01:00','12:00:00',4);
-insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id)values(5,11,'13:01:00','15:30:00',5);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(5,10,'09:01:00','12:00:00',2,2.8);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(5,10,'09:01:00','12:00:00',4,2.8);
+insert into grupo_aula(materia_grupo_id,aula_id,hora_inicio,hora_fin,dia_id,duracionClase)values(5,11,'13:01:00','15:30:00',5,2.8);
 -- 0000
 -- ********************
 insert into gestion(anio,fecha_ini,fecha_fin)values(2024,'2024-03-15','2024-12-20');
@@ -206,36 +229,51 @@ insert into periodo(nombre)values('verano');
 -- ********************
 insert into gestion_periodo(gestion_id,periodo_id,inicio_clase,fin_clase,evaluacion1,evaluacion2,evaluacion3)values(1,1,'2024-03-05','2024-05-28','2024-04-18',null,null);
 -- ********************
-insert into grupo_asignado(usuario_id,gestion_periodo_id,materia_grupo_id)values(2,1,1);
-insert into grupo_asignado(usuario_id,gestion_periodo_id,materia_grupo_id)values(2,1,2);
-insert into grupo_asignado(usuario_id,gestion_periodo_id,materia_grupo_id)values(3,1,5);
+insert into grupo_asignado(usuario_id,gestion_periodo_id,materia_grupo_id,horas_asignadas)values(2,1,1,1.2);
+insert into grupo_asignado(usuario_id,gestion_periodo_id,materia_grupo_id,horas_asignadas)values(2,1,2,2.4);
+insert into grupo_asignado(usuario_id,gestion_periodo_id,materia_grupo_id,horas_asignadas)values(3,1,5,3.2);
 -- ********************
-insert into registro(usuario_id,timestamps,tipo_check,device) values(1,now(),'in','movil');
-insert into registro(usuario_id,timestamps,tipo_check,device) values(1,now(),'out','movil');
+insert into registro(usuario_id,tiempo,fecha,tipo_check,lugar) values(1,now(),now(),'in','presencial');
+insert into registro(usuario_id,tiempo,fecha,tipo_check,lugar) values(1,now(),now(),'out','presencial');
+insert into registro(usuario_id,tiempo,fecha,tipo_check,lugar) values(1,now(),now(),'out','virtual');
 
+-- ********************
+insert into actividad(nombre,duracion,direccion,fecha,hora_ini,hora_fin)values('Conferencia','2.30','Av/ las palmas',now(),'13:30:00','14:45:00');
+insert into actividad(nombre,duracion,direccion,fecha,hora_ini,hora_fin)values('taller','1.50','Av/ tajibo',now(),'15:00:00','17:45:00');
+-- ********************
+insert into actividad_usuario(usuario_id,actividad_id) values(1,1);
+insert into actividad_usuario(usuario_id,actividad_id) values(2,1);
+insert into actividad_usuario(usuario_id,actividad_id) values(1,2);
 
+select * from registro
+select * from actividad_usuario
 
-select * from grupo_aula
-select * from materia_grupo
 select * from grupo_asignado
 
-drop table grupo_asignado;
+drop table IF EXISTS grupo_asignado;
 --  ++++++++++++++++++
-drop table registro;
-drop table usuario;
+drop table IF EXISTS actividad_usuario;
+drop table IF EXISTS actividad;
+drop table IF EXISTS registro;
+drop table IF EXISTS usuario;
 --  ++++++++++++++++++
-drop table grupo_aula;
-drop table dia;
-drop table aula;
-drop table modulo;
-drop table materia_grupo;
-drop table materia;
-drop table grupo;
-drop table carrera;
+drop table IF EXISTS grupo_aula;
+drop table IF EXISTS dia;
+drop table IF EXISTS aula;
+drop table IF EXISTS modulo;
+drop table IF EXISTS materia_grupo;
+drop table IF EXISTS materia;
+drop table IF EXISTS grupo;
+drop table IF EXISTS carrera;
 --  ++++++++++++++++++
-drop table gestion_periodo;
-drop table gestion;
-drop table periodo;
+drop table IF EXISTS gestion_periodo;
+drop table IF EXISTS gestion;
+drop table IF EXISTS periodo;
+
+
+SELECT CASE WHEN COUNT(au) > 0 THEN true ELSE false END FROM actividad_usuario au WHERE au.usuario_id = :usuario_id AND au.actividad_id = :actividad_id
+SELECT CASE WHEN COUNT(au) > 0 THEN true ELSE false END FROM ActividadUsuario au WHERE au.usuario.id = :usuario_id AND au.actividad.id = :actividad_id
+
 
 -- grupos de materia fisica
 select m.nombre, g.nombre

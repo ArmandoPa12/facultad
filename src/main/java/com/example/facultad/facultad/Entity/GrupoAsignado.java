@@ -1,5 +1,6 @@
 package com.example.facultad.facultad.Entity;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 import jakarta.persistence.*;
@@ -11,7 +12,8 @@ public class GrupoAsignado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalTime horas_asignadas;
+    @Column(precision = 19, scale = 2)
+    private BigDecimal horas_asignadas;
 
     @ManyToOne
     @JoinColumn(name = "gestion_periodo_id", nullable = false)
@@ -26,7 +28,7 @@ public class GrupoAsignado {
     public GrupoAsignado() {
     }
 
-    public GrupoAsignado(Long id, LocalTime horas_asignadas, GestionPeriodo gestionPeriodo, MateriaGrupo materiaGrupo,
+    public GrupoAsignado(Long id, BigDecimal horas_asignadas, GestionPeriodo gestionPeriodo, MateriaGrupo materiaGrupo,
             Usuario usuario) {
         this.id = id;
         this.horas_asignadas = horas_asignadas;
@@ -43,11 +45,11 @@ public class GrupoAsignado {
         this.id = id;
     }
 
-    public LocalTime getHoras_asignadas() {
+    public BigDecimal getHoras_asignadas() {
         return horas_asignadas;
     }
 
-    public void setHoras_asignadas(LocalTime horas_asignadas) {
+    public void setHoras_asignadas(BigDecimal horas_asignadas) {
         this.horas_asignadas = horas_asignadas;
     }
 

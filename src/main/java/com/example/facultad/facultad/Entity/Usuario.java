@@ -1,5 +1,8 @@
 package com.example.facultad.facultad.Entity;
 
+import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +27,38 @@ public class Usuario {
     private boolean sexo;
     private boolean rol;
 
-    protected Usuario() {
+    @Column(precision = 19, scale = 2)
+    private BigDecimal sueldo;
+    @Column(precision = 19, scale = 2)
+    private BigDecimal sueldo_final;
+    @Column(precision = 19, scale = 2)
+    private BigDecimal descuento;
+
+    public BigDecimal getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(BigDecimal sueldo) {
+        this.sueldo = sueldo;
+    }
+
+    public BigDecimal getSueldo_final() {
+        return sueldo_final;
+    }
+
+    public void setSueldo_final(BigDecimal sueldo_final) {
+        this.sueldo_final = sueldo_final;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public Usuario() {
     }
 
     public Usuario(Long id, String ci, String nombre, String apellidos, String usuario, String password,
@@ -38,6 +72,23 @@ public class Usuario {
         this.telefono = telefono;
         this.sexo = sexo;
         this.rol = rol;
+    }
+
+    public Usuario(Long id, String ci, String nombre, String apellidos, String usuario, String password,
+            String telefono, boolean sexo, boolean rol, BigDecimal sueldo, BigDecimal sueldo_final,
+            BigDecimal descuento) {
+        this.id = id;
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.usuario = usuario;
+        this.password = password;
+        this.telefono = telefono;
+        this.sexo = sexo;
+        this.rol = rol;
+        this.sueldo = sueldo;
+        this.sueldo_final = sueldo_final;
+        this.descuento = descuento;
     }
 
     // #region getters

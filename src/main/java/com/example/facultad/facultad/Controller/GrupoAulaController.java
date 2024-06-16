@@ -1,5 +1,8 @@
 package com.example.facultad.facultad.Controller;
 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,16 +50,24 @@ public class GrupoAulaController {
         Aula aula = aulaService.findById(grupoAulaDTO.getAula_id());
         MateriaGrupo materiaGrupo = materiaGrupoService.findById(grupoAulaDTO.getAula_id());
         Dia dia = diaService.findById(grupoAulaDTO.getDia_id());
+
         GrupoAula grupoAula = new GrupoAula();
         grupoAula.setHoraInicio(grupoAulaDTO.getHoraInicio());
         grupoAula.setHoraFin(grupoAulaDTO.getHoraFin());
         grupoAula.setAula(aula);
         grupoAula.setDia(dia);
         grupoAula.setMateriaGrupo(materiaGrupo);
-        GrupoAula nuevo = grupoAulaService.save(grupoAula);
+
+        LocalTime horaInicio = LocalTime.parse(grupoAulaDTO.getHoraInicio().toString());
+        LocalTime horaFin = LocalTime.parse(grupoAulaDTO.getHoraFin().toString());
+        Duration duration = Duration.between(horaInicio, horaFin);
+        BigDecimal duracionClase = BigDecimal.valueOf(duration.toMinutes()).divide(BigDecimal.valueOf(60), 2);
+        grupoAula.setDuracionclase(duracionClase);
+
         if (grupoAulaService.verificarConflictoHorario(grupoAula)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
+        GrupoAula nuevo = grupoAulaService.save(grupoAula);
         return ResponseEntity.ok(nuevo);
     }
 

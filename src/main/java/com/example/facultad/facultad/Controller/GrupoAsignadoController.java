@@ -1,5 +1,6 @@
 package com.example.facultad.facultad.Controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class GrupoAsignadoController {
         List<GrupoAsignadoRespoDTO> asingados = new ArrayList<>();
         for (GrupoAsignado x : grupos) {
             GrupoAsignadoRespoDTO dto = new GrupoAsignadoRespoDTO();
+            dto.setId(x.getId());
             // gestion
             dto.setGestion_id(x.getGestionPeriodo().getGestion().getId());
             dto.setAnio(x.getGestionPeriodo().getGestion().getAnio());
@@ -61,18 +63,20 @@ public class GrupoAsignadoController {
             dto.setUsuario_id(x.getUsuario().getId());
             dto.setUsuario(x.getUsuario().getUsuario());
             dto.setUsuario_nombre(x.getUsuario().getNombre());
-            ;
             dto.setUsuario_apellidos(x.getUsuario().getApellidos());
+            dto.setHoras_asignadas(x.getHoras_asignadas());
 
             // encontrar los cursos;
             List<GrupoAula> grupoAulas = grupoAulaService.findByMateriaGrupoId(x.getMateriaGrupo().getId());
             // lista de cursos donde se guardaran, esta vacio
             List<ListaCursosRespoDTO> cursosTotal = new ArrayList<>();
+            // BigDecimal totalHoras = BigDecimal.ZERO;
             for (GrupoAula y : grupoAulas) {
                 ListaCursosRespoDTO cursoActual = new ListaCursosRespoDTO();
                 cursoActual.setId(y.getId());
                 cursoActual.setHora_fin(y.getHoraFin());
                 cursoActual.setHora_inicio(y.getHoraInicio());
+                cursoActual.setDuracionClase(y.getDuracionclase());
 
                 cursoActual.setAula_id(y.getAula().getId());
                 cursoActual.setAula_nombre(y.getAula().getNombre());
@@ -81,6 +85,7 @@ public class GrupoAsignadoController {
                 cursoActual.setDia_id(y.getDia().getId());
                 cursoActual.setDia_nombre(y.getDia().getNombre());
                 cursosTotal.add(cursoActual);
+
             }
 
             dto.setCursoLista(cursosTotal);
@@ -92,31 +97,65 @@ public class GrupoAsignadoController {
 
     @PostMapping
     public ResponseEntity<GrupoAsignado> createGestionPeriodo(@RequestBody GrupoAsignadoDTO grupoAsignadoDTO) {
+        // usuario
         Usuario usuario = usuarioService.findById(grupoAsignadoDTO.getUsuario_id());
+        // gestio_periodo
         GestionPeriodo gestionPeriodo = gestionPeriodoService.findById(grupoAsignadoDTO.getGestionPeriodo_id());
+        // materia_grupo
         MateriaGrupo materiaGrupo = materiaGrupoServicel.findById(grupoAsignadoDTO.getMateriaGrupo_id());
+        // grupo_aula para sacar los horarios
+        List<GrupoAula> grupoAula = grupoAulaService.findByMateriaGrupoId(grupoAsignadoDTO.getMateriaGrupo_id());
 
         GrupoAsignado nuevo = new GrupoAsignado();
+        // calcular hora totales
+        BigDecimal totalHoras = BigDecimal.ZERO;
+        BigDecimal smenas = new BigDecimal(4);
+
+        for (GrupoAula clase : grupoAula) {
+            totalHoras = totalHoras.add(clase.getDuracionclase());
+        }
+        // calcular el total de horas por los dias trabajados
+        nuevo.setHoras_asignadas(totalHoras.multiply(smenas));
         nuevo.setGestionPeriodo(gestionPeriodo);
         nuevo.setMateriaGrupo(materiaGrupo);
         nuevo.setUsuario(usuario);
 
-        nuevo.setHoras_asignadas(grupoAsignadoDTO.getHoras_asignadas());
+        GrupoAsignado newCreado = grupoAsignadoService.save(nuevo);
+        return ResponseEntity.ok(newCreado);
+    }
 
-        // Gestion gestion = gestionService.findById(gestionPeriodoDTO.getGestion_id());
-        // Periodo periodo = periodoService.findById(gestionPeriodoDTO.getPeriodo_id());
+    @PutMapping("/{id}")
+    public ResponseEntity<GrupoAsignado> update(@PathVariable Long id, @RequestBody GrupoAsignadoDTO grupoAsignadoDTO) {
+        GrupoAsignado editado = grupoAsignadoService.findById(id);
+        Usuario usuario = usuarioService.findById(grupoAsignadoDTO.getUsuario_id());
+        // gestio_periodo
+        GestionPeriodo gestionPeriodo = gestionPeriodoService.findById(grupoAsignadoDTO.getGestionPeriodo_id());
+        // materia_grupo
+        MateriaGrupo materiaGrupo = materiaGrupoServicel.findById(grupoAsignadoDTO.getMateriaGrupo_id());
+        // grupo_aula para sacar los horarios
+        List<GrupoAula> grupoAula = grupoAulaService.findByMateriaGrupoId(grupoAsignadoDTO.getMateriaGrupo_id());
+        // calcular hora totales
+        BigDecimal totalHoras = BigDecimal.ZERO;
+        BigDecimal smenas = new BigDecimal(4);
 
-        // GestionPeriodo nuevo = new GrupoAsignado();
-        // nuevo.setEvaluacion1(gestionPeriodoDTO.getEvaluacion1());
-        // nuevo.setEvaluacion2(gestionPeriodoDTO.getEvaluacion2());
-        // nuevo.setEvaluacion3(gestionPeriodoDTO.getEvaluacion3());
-        // nuevo.setFin_clase(gestionPeriodoDTO.getFin_clase());
-        // nuevo.setGestion(gestion);
-        // nuevo.setPeriodo(periodo);
-        // nuevo.setInicio_clase(gestionPeriodoDTO.getInicio_clase());
+        for (GrupoAula clase : grupoAula) {
+            totalHoras = totalHoras.add(clase.getDuracionclase());
+        }
+        // calcular el total de horas por los dias trabajados
+        editado.setHoras_asignadas(totalHoras.multiply(smenas));
+        editado.setGestionPeriodo(gestionPeriodo);
+        editado.setMateriaGrupo(materiaGrupo);
+        editado.setUsuario(usuario);
 
-        GrupoAsignado newPeriodo = grupoAsignadoService.save(nuevo);
-        return ResponseEntity.ok(newPeriodo);
+        grupoAsignadoService.save(editado);
+
+        return ResponseEntity.ok(editado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        grupoAsignadoService.deleteById(id);
+        return ResponseEntity.ok(null);
     }
 
 }

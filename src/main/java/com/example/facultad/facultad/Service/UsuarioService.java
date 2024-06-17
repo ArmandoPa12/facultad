@@ -1,5 +1,7 @@
 package com.example.facultad.facultad.Service;
 
+import java.util.List;
+
 import com.example.facultad.facultad.Dto.LoginDTO;
 import com.example.facultad.facultad.Dto.UsuarioDTO;
 import com.example.facultad.facultad.Entity.Usuario;
@@ -13,5 +15,11 @@ public interface UsuarioService {
     LoginResponse loginUsuario(LoginDTO loginDTO);
 
     Usuario findById(Long id);
+
+    Usuario save(Usuario usuario);
+
+    void deleteById(Long id);
+
+    List<Usuario> findAll();
 
 }

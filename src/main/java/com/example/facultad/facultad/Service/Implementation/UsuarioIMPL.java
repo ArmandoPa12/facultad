@@ -1,5 +1,6 @@
 package com.example.facultad.facultad.Service.Implementation;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,21 @@ public class UsuarioIMPL implements UsuarioService {
     @Override
     public Usuario findById(Long id) {
         return usuarioRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Usuario> findAll() {
+        return usuarioRepository.findAll();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        usuarioRepository.deleteById(id);
+    }
+
+    @Override
+    public Usuario save(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 
 }

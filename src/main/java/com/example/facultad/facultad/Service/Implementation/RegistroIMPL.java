@@ -34,4 +34,9 @@ public class RegistroIMPL implements RegistroService {
     public void deleteById(Long id) {
         registroRepository.deleteById(id);
     }
+
+    @Override
+    public List<Registro> findAllByUsuarioId(Long usuarioId) {
+        return registroRepository.findAllByUsuarioId(usuarioId);
+    }
 }

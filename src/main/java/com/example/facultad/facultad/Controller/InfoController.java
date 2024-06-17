@@ -1,11 +1,6 @@
 package com.example.facultad.facultad.Controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.facultad.facultad.Entity.Grupo;
 
 @CrossOrigin
 @RestController

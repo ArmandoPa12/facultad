@@ -14,4 +14,6 @@ public interface RegistroService {
 
     void deleteById(Long id);
 
+    List<Registro> findAllByUsuarioId(Long usuarioId);
+
 }
